@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pp-phragmen"
-version = "0.1.0"
+version = "0.1.1"
 description = "Privacy-Preserving Phragmén Voting via Secure Multi-Party Computation"
 authors = [{name = "Liran Shem-Tov", email = "liranst13@gmail.com"}]
 requires-python = ">=3.10"
