@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mpc-secret-shares"
-version = "0.1.1"
+version = "0.2.0"
 description = "MPC primitives over Shamir secret shares, implemented from the SoK paper"
 readme = "README.md"
 authors = [{name = "Liran Shem-Tov", email = "liranst13@gmail.com"}]

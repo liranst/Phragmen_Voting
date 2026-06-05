@@ -17,81 +17,89 @@ any _t_ out of _n_ parties can reconstruct a secret; fewer than _t_ parties lear
 pip install mpc-secret-shares
 ```
 
-Or install directly from source:
-
-```bash
-git clone https://github.com/yourusername/mpc-secret-shares.git
-cd mpc-secret-shares/mpc_project
-pip install .
-```
-
 ---
 
 ## Quick Start
 
 ```python
 import random
-from mpc_secret_shares import (
-    protocol_1_share,
-    protocol_2_reconstruct,
-    protocol_4_secure_mult,
-    protocol_5_secure_compare,
-    protocol_10_is_zero,
-)
+from mpc_secret_shares import share, reconstruct, secure_mult, secure_lt, is_zero
 
 random.seed(42)
 
-# --- MPC parameters ---
-p = 11   # prime field  Z_11
+# MPC parameters
+p = 11   # prime field Z_11
 n = 3    # three parties
 t = 2    # any 2 shares reconstruct the secret
 
-# --- Share two secrets ---
-shares_u = protocol_1_share(S=4, n=n, t=t, P=p)
-shares_v = protocol_1_share(S=5, n=n, t=t, P=p)
+# Share two secrets
+sh_u = share(S=4, n=n, t=t, P=p)
+sh_v = share(S=5, n=n, t=t, P=p)
 
-# --- Secure multiplication: 4 * 5 = 20 ≡ 9 (mod 11) ---
-shares_w = protocol_4_secure_mult(shares_u, shares_v, n=n, t=t, P=p)
-w = protocol_2_reconstruct(shares_w[:t], p)
-print(f"4 × 5 mod 11 = {w}")   # → 9
+# Secure multiplication: 4 × 5 = 20 ≡ 9 (mod 11)
+sh_w = secure_mult(sh_u, sh_v, n=n, t=t, P=p)
+print(f"4 × 5 mod 11 = {reconstruct(sh_w[:t], p)}")   # → 9
 
-# --- Secure comparison: 4 < 5 ? ---
-shares_cmp = protocol_5_secure_compare(shares_u, shares_v, n=n, t=t, p=p)
-cmp_result = protocol_2_reconstruct(shares_cmp[:t], p)
-print(f"4 < 5 → {bool(cmp_result)}")   # → True
+# Secure comparison: 4 < 5 ?
+sh_cmp = secure_lt(sh_u, sh_v, n=n, t=t, p=p)
+print(f"4 < 5 → {bool(reconstruct(sh_cmp[:t], p))}")  # → True
 
-# --- IsZero test ---
-shares_zero = protocol_1_share(S=0, n=n, t=t, P=p)
-shares_iz = protocol_10_is_zero(shares_zero, n=n, t=t, p=p)
-print(f"IsZero(0) = {protocol_2_reconstruct(shares_iz[:t], p)}")  # → 1
+# IsZero test
+sh_zero = share(S=0, n=n, t=t, P=p)
+print(f"is_zero(0) = {reconstruct(is_zero(sh_zero, n=n, t=t, p=p)[:t], p)}")  # → 1
 ```
 
 ---
 
-## Implemented Protocols
+## API Reference
 
-| Module | Protocol | Description |
-|--------|----------|-------------|
-| `protocol1` | Share | Shamir secret sharing |
-| `protocol2` | Reconstruct | Lagrange interpolation |
-| `protocol3` | RNG | Shared random number generation |
-| `protocol4` | SecureMult | Secure multiplication |
-| `protocol5_secure_compare` | SecureCompare | Secure `1_{u < v}` |
-| `protocol6_less_than_half_p` | LessThan_Half_P | Secure `1_{a < p/2}` |
-| `protocol7_lsb` | LSB | Secure least-significant-bit extraction |
-| `protocol8_gen_rnd_bit_sharing` | GenRndBitSharing | Random bit generation |
-| `protocol9_bitwise_less_than` | Bitwise_LessThan | Bitwise comparison |
-| `protocol10` | IsZero | Secure equality to zero |
-| `protocol12` | BinaryLongDiv | Cleartext binary long division |
-| `protocol13_secure_division` | SecureDivision | Secure floor division |
-| `algorithm14_bitwise_sqrt` | BitwiseSqrt | Cleartext integer square root |
-| `protocol15_secure_sqrt` | SecureSqrt | Secure integer square root |
-| `protocol16_mary_or` | m-ary OR | Secure OR via polynomial evaluation |
-| `protocol17_improved_mary_or` | Improved OR | Communication-efficient OR |
-| `algorithm18_kth_ranked` | KthRanked | Cleartext k-th ranked element |
-| `affine_combinations` | AffineCombo | Local α + β·u + γ·v |
-| `share_utils` | — | Local share arithmetic helpers |
-| `secure_inv` | SecureInv | Secure modular inverse |
+### v0.2.0 clean names
+
+| Clean name | Description |
+|---|---|
+| `share(S, n, t, P)` | Shamir secret sharing |
+| `reconstruct(shares, p)` | Lagrange interpolation |
+| `secure_mult(u, v, n, t, p)` | Secure multiplication |
+| `secure_lt(u, v, n, t, p)` | Secure `1_{u < v}` |
+| `less_than_half_p(u, n, t, p)` | Secure `1_{u < p/2}` |
+| `lsb(u, n, t, p)` | Secure least-significant-bit |
+| `random_bit(n, t, p)` | Shared random bit |
+| `bitwise_lt(a, b_bits, n, t, p)` | Bitwise comparison |
+| `is_zero(u, n, t, p)` | Secure equality to zero |
+| `secure_inv(u, n, t, p)` | Secure modular inverse |
+| `secure_div(u, v, u_bits, n, t, p)` | Secure floor division |
+| `secure_sqrt(u, u_bits, n, t, p)` | Secure integer square root |
+| `mary_or(bits, n, t, p)` | Secure m-ary OR |
+| `improved_mary_or(bits, n, t, p)` | Communication-efficient OR |
+| `kth_ranked(dataset, M, k)` | k-th ranked element (cleartext) |
+
+### Unchanged names
+
+| Name | Description |
+|---|---|
+| `protocol_3_rng(n, t, p)` | Shared random number |
+| `protocol_3_1_affine_combination(a, b, c, u, v, p)` | Local α + β·u + γ·v |
+| `binary_long_division(u, v)` | Cleartext binary long division |
+| `algorithm_14_bitwise_sqrt(u)` | Cleartext integer square root |
+| `compute_or_polynomial_coefficients(m, p)` | OR polynomial coefficients |
+| `square_and_multiply(x, c, n)` | Modular exponentiation |
+| `shares_add / sub / scalar / ...` | Local share arithmetic |
+
+### Deprecated names (removed in v1.0)
+
+All `protocol_N_*` and `algorithm_N_*` names that have a clean alias above
+still work but emit a `DeprecationWarning` on every call.
+
+```python
+# Old style (works, but warns):
+from mpc_secret_shares import protocol_1_share
+sh = protocol_1_share(7, n=3, t=2, P=11)
+# DeprecationWarning: 'protocol_1_share' is deprecated; use 'share' instead.
+
+# New style:
+from mpc_secret_shares import share
+sh = share(7, n=3, t=2, P=11)
+```
 
 ---
 
