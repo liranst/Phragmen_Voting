@@ -32,8 +32,8 @@ Invariant verification:
 
 from typing import List, Tuple
 
-from mpc_primitives.mpc_project.mpc_secret_shares import (
-    protocol_4_secure_mult,
+from mpc_secret_shares import (
+    secure_mult,
     shares_add,
     shares_one,
     shares_sub,
@@ -98,13 +98,13 @@ def algorithm_7_wallet_update(
         # Line 4: [[|A(m*)|]] ← [[|A(m*)|]] + SecureMult([[χ_m]], [[|A(m)|]])
         A_star = shares_add(
             A_star,
-            protocol_4_secure_mult(chi[m], A_shares[m], n, t, p),
+            secure_mult(chi[m], A_shares[m], n, t, p),
             p,
         )
         # Line 5: [[T̃*]] ← [[T̃*]] + SecureMult([[χ_m]], [[T̃_m]])
         T_star = shares_add(
             T_star,
-            protocol_4_secure_mult(chi[m], T_tilde_shares[m], n, t, p),
+            secure_mult(chi[m], T_tilde_shares[m], n, t, p),
             p,
         )
 
@@ -124,12 +124,12 @@ def algorithm_7_wallet_update(
         for m in range(num_candidates):                        # Line 9
             gamma_i = shares_add(
                 gamma_i,
-                protocol_4_secure_mult(B_hat[i][m], chi[m], n, t, p),
+                secure_mult(B_hat[i][m], chi[m], n, t, p),
                 p,
             )                                                  # Line 10
 
         # Line 11: [[μ_i]] ← SecureMult([[W̃_i]], [[|A(m*)|]])
-        mu_i: Shares = protocol_4_secure_mult(
+        mu_i: Shares = secure_mult(
             wallet_shares[i], A_star, n, t, p
         )
 
@@ -140,10 +140,10 @@ def algorithm_7_wallet_update(
         # [[1]] − [[γ_i]] is local.  Supporters (γ_i=1) → 0; others → ν_i.
         one_minus_gamma: Shares = shares_sub(one, gamma_i, p)
         new_wallets.append(
-            protocol_4_secure_mult(one_minus_gamma, nu_i, n, t, p)
+            secure_mult(one_minus_gamma, nu_i, n, t, p)
         )                                                      # Line 13
 
     # Line 14: [[Δ]] ← SecureMult([[Δ]], [[|A(m*)|]])
-    new_delta: Shares = protocol_4_secure_mult(delta_shares, A_star, n, t, p)
+    new_delta: Shares = secure_mult(delta_shares, A_star, n, t, p)
 
     return new_wallets, new_delta                              # Line 14

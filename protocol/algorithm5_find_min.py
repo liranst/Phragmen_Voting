@@ -17,9 +17,9 @@ bottleneck of the per-period loop (paper Remark 6.1).
 
 from typing import List, Tuple
 
-from mpc_primitives.mpc_project.mpc_secret_shares import (
-    protocol_4_secure_mult,
-    protocol_5_secure_compare,
+from mpc_secret_shares import (
+    secure_mult,
+    secure_lt,
     shares_add,
     shares_sub,
 )
@@ -77,24 +77,24 @@ def algorithm_5_find_minimum_score(
         score_den: Shares = scores[m][1]
 
         # Line 4: cross_a = Score_m^num · best^den
-        cross_a: Shares = protocol_4_secure_mult(
+        cross_a: Shares = secure_mult(
             score_num, best_den, n, t, p
         )
 
         # Line 5: cross_b = best^num · Score_m^den
-        cross_b: Shares = protocol_4_secure_mult(
+        cross_b: Shares = secure_mult(
             best_num, score_den, n, t, p
         )
 
         # Line 6: β_m = SecureLT(cross_a, cross_b)
         # β_m = 1  iff  Score_m < Score_best  (candidate m is a better winner)
-        beta_m: Shares = protocol_5_secure_compare(cross_a, cross_b, n, t, p)
+        beta_m: Shares = secure_lt(cross_a, cross_b, n, t, p)
 
         # Line 7: best^num ← best^num + β_m · (Score_m^num − best^num)
         diff_num: Shares = shares_sub(score_num, best_num, p)
         best_num = shares_add(
             best_num,
-            protocol_4_secure_mult(beta_m, diff_num, n, t, p),
+            secure_mult(beta_m, diff_num, n, t, p),
             p,
         )
 
@@ -102,7 +102,7 @@ def algorithm_5_find_minimum_score(
         diff_den: Shares = shares_sub(score_den, best_den, p)
         best_den = shares_add(
             best_den,
-            protocol_4_secure_mult(beta_m, diff_den, n, t, p),
+            secure_mult(beta_m, diff_den, n, t, p),
             p,
         )
 

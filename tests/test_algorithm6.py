@@ -13,9 +13,9 @@ import random
 
 import pytest
 
-from mpc_primitives.mpc_project.mpc_secret_shares import (
-    protocol_1_share,
-    protocol_2_reconstruct,
+from mpc_secret_shares import (
+    share,
+    reconstruct,
 )
 from protocol.algorithm6_one_hot import algorithm_6_one_hot_winner
 from protocol.types import ScorePair, Shares
@@ -28,11 +28,11 @@ P, N, T = 11, 3, 2
 # ---------------------------------------------------------------------------
 
 def _share(v: int) -> Shares:
-    return protocol_1_share(v, N, T, P)
+    return share(v, N, T, P)
 
 
 def _rec(s: Shares) -> int:
-    return protocol_2_reconstruct(s[:T], P)
+    return reconstruct(s[:T], P)
 
 
 def _score(num: int, den: int) -> ScorePair:

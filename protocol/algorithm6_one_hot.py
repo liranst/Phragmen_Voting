@@ -30,9 +30,9 @@ Communication: 2M + (M−1) SecureMult and M SecureIsZero per period.
 
 from typing import List
 
-from mpc_primitives.mpc_project.mpc_secret_shares import (
-    protocol_4_secure_mult,
-    protocol_10_is_zero,
+from mpc_secret_shares import (
+    secure_mult,
+    is_zero,
     shares_add,
     shares_one,
     shares_sub,
@@ -95,19 +95,19 @@ def algorithm_6_one_hot_winner(
         score_num, score_den = scores[m]
 
         # Line 2: α_m = SecureMult([[Score_m^num]], [[Score*^den]])
-        alpha_m: Shares = protocol_4_secure_mult(
+        alpha_m: Shares = secure_mult(
             score_num, star_den, n, t, p
         )
 
         # Line 3: β_m = SecureMult([[Score*^num]], [[Score_m^den]])
-        beta_m: Shares = protocol_4_secure_mult(
+        beta_m: Shares = secure_mult(
             star_num, score_den, n, t, p
         )
 
         # Line 4: e_m = SecureIsZero([[α_m]] − [[β_m]])
         # α_m − β_m = 0  iff  Score_m = Score*  (same fraction)
         diff: Shares = shares_sub(alpha_m, beta_m, p)
-        e.append(protocol_10_is_zero(diff, n, t, p))
+        e.append(is_zero(diff, n, t, p))
 
     # ------------------------------------------------------------------
     # Lines 5-11: prefix scan in permutation order π.
@@ -127,7 +127,7 @@ def algorithm_6_one_hot_winner(
         # Line 10: [[χ_m]] = SecureMult([[e_m]], [[1]] − [[s]])
         # [[1]] − [[s]] is local (affine subtraction of public 1).
         one_minus_s: Shares = shares_sub(one, s, p)
-        chi[m] = protocol_4_secure_mult(e[m], one_minus_s, n, t, p)  # Line 10
+        chi[m] = secure_mult(e[m], one_minus_s, n, t, p)  # Line 10
 
         # Line 11: [[s]] ← [[s]] + [[χ_m]]  (local)
         s = shares_add(s, chi[m], p)                                 # Line 11

@@ -18,7 +18,7 @@ interpolation on already-held shares.
 
 from typing import List
 
-from mpc_primitives.mpc_project.mpc_secret_shares import protocol_2_reconstruct
+from mpc_secret_shares import reconstruct
 from protocol.types import Shares
 
 
@@ -59,7 +59,7 @@ def algorithm_8_reconstruct_winner(
     # Lines 1-4: reconstruct every χ_m publicly and validate each value.
     chi_plain: List[int] = []
     for m, shares in enumerate(chi):                                 # Line 1
-        val: int = protocol_2_reconstruct(shares[:t], p)             # Line 2
+        val: int = reconstruct(shares[:t], p)             # Line 2
         if val not in (0, 1):                                        # Line 3
             raise ValueError(
                 f"χ_{m} = {val} is not in {{0, 1}}: "

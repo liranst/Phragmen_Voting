@@ -11,7 +11,7 @@ No MPC secure operations are required — both values are public constants.
 
 from typing import List, Tuple
 
-from mpc_primitives.mpc_project.mpc_secret_shares import (
+from mpc_secret_shares import (
     shares_one,
     shares_zero,
 )

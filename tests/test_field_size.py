@@ -30,9 +30,9 @@ import random
 from fractions import Fraction
 from typing import List, Optional, Tuple
 
-from mpc_primitives.mpc_project.mpc_secret_shares import (
-    protocol_1_share,
-    protocol_2_reconstruct,
+from mpc_secret_shares import (
+    share,
+    reconstruct,
 )
 from protocol.algorithm2_validation import algorithm_2_input_validation
 from protocol.algorithm3_initialization import algorithm_3_initialization
@@ -112,10 +112,10 @@ def _run_stress(
     random.seed(42)
 
     def _share(v: int) -> Shares:
-        return protocol_1_share(v, n, t, p)
+        return share(v, n, t, p)
 
     def _rec(s: Shares) -> int:
-        return protocol_2_reconstruct(s[:t], p)
+        return reconstruct(s[:t], p)
 
     def _make_ballot_shares() -> BallotMatrix:
         return [[_share(v) for v in row] for row in ballots]

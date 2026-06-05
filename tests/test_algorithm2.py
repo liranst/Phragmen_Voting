@@ -10,9 +10,9 @@ import random
 
 import pytest
 
-from mpc_primitives.mpc_project.mpc_secret_shares import (
-    protocol_1_share,
-    protocol_2_reconstruct,
+from mpc_secret_shares import (
+    share,
+    reconstruct,
 )
 from protocol.algorithm2_validation import algorithm_2_input_validation
 from protocol.types import BallotMatrix, Shares
@@ -30,7 +30,7 @@ P, N, T = 11, 3, 2
 
 def _share(secret: int) -> Shares:
     """Create a (T,N)-sharing of secret over Z_P."""
-    return protocol_1_share(secret, N, T, P)
+    return share(secret, N, T, P)
 
 
 def _ballot_matrix(values: list[list[int]]) -> BallotMatrix:
@@ -41,7 +41,7 @@ def _ballot_matrix(values: list[list[int]]) -> BallotMatrix:
 def _reconstruct_ballot(B_hat: BallotMatrix) -> list[list[int]]:
     """Reconstruct every entry of B_hat for assertion comparison."""
     return [
-        [protocol_2_reconstruct(B_hat[i][m][:T], P) for m in range(len(B_hat[i]))]
+        [reconstruct(B_hat[i][m][:T], P) for m in range(len(B_hat[i]))]
         for i in range(len(B_hat))
     ]
 
@@ -84,7 +84,7 @@ class TestNoCheaters:
         B_hat, n_valid = algorithm_2_input_validation(B, N, T, P)
         assert n_valid == 1
         assert len(B_hat) == 1
-        assert protocol_2_reconstruct(B_hat[0][0][:T], P) == 1
+        assert reconstruct(B_hat[0][0][:T], P) == 1
 
     def test_row_order_preserved(self):
         """Honest voters retain their original relative order."""

@@ -10,7 +10,7 @@ import random
 
 import pytest
 
-from mpc_primitives.mpc_project.mpc_secret_shares import protocol_1_share
+from mpc_secret_shares import share
 from protocol.algorithm8_reconstruct_winner import algorithm_8_reconstruct_winner
 from protocol.types import Shares
 
@@ -22,7 +22,7 @@ P, N, T = 11, 3, 2
 # ---------------------------------------------------------------------------
 
 def _share(v: int) -> Shares:
-    return protocol_1_share(v, N, T, P)
+    return share(v, N, T, P)
 
 
 def _chi(winner: int, m: int) -> list[Shares]:

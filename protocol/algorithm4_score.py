@@ -24,8 +24,8 @@ making Algorithm 5's comparison meaningless.
 
 from typing import List, Tuple
 
-from mpc_primitives.mpc_project.mpc_secret_shares import (
-    protocol_4_secure_mult,
+from mpc_secret_shares import (
+    secure_mult,
     shares_add,
     shares_sub,
     shares_zero,
@@ -94,7 +94,7 @@ def algorithm_4_score_computation(
             A_m = shares_add(A_m, b_im, p)
 
             # Line 6: [[contrib]] ← SecureMult([[B̂_{i,m}]], [[W̃_i]])
-            contrib: Shares = protocol_4_secure_mult(
+            contrib: Shares = secure_mult(
                 b_im, wallet_shares[i], n, t, p
             )
 
@@ -105,7 +105,7 @@ def algorithm_4_score_computation(
         score_num: Shares = shares_sub(delta_shares, T_m, p)
 
         # Line 9: [[Score_m^den]] ← SecureMult([[Δ]], [[|A(m)|]])
-        score_den: Shares = protocol_4_secure_mult(
+        score_den: Shares = secure_mult(
             delta_shares, A_m, n, t, p
         )
 

@@ -13,9 +13,9 @@ import random
 
 import pytest
 
-from mpc_primitives.mpc_project.mpc_secret_shares import (
-    protocol_1_share,
-    protocol_2_reconstruct,
+from mpc_secret_shares import (
+    share,
+    reconstruct,
 )
 from protocol.algorithm5_find_min import algorithm_5_find_minimum_score
 from protocol.types import ScorePair, Shares
@@ -34,11 +34,11 @@ P, N, T = 11, 3, 2
 # ---------------------------------------------------------------------------
 
 def _share(secret: int) -> Shares:
-    return protocol_1_share(secret, N, T, P)
+    return share(secret, N, T, P)
 
 
 def _rec(shares: Shares) -> int:
-    return protocol_2_reconstruct(shares[:T], P)
+    return reconstruct(shares[:T], P)
 
 
 def _score(num: int, den: int) -> ScorePair:

@@ -13,9 +13,9 @@ fresh matrix B̂ of size N_valid × M.
 
 from typing import List, Tuple
 
-from mpc_primitives.mpc_project.mpc_secret_shares import (
-    protocol_2_reconstruct,
-    protocol_4_secure_mult,
+from mpc_secret_shares import (
+    reconstruct,
+    secure_mult,
     shares_one,
     shares_sub,
 )
@@ -70,12 +70,12 @@ def algorithm_2_input_validation(
             # Line 4: [[u]] = SecureMult([[B]], [[B]] − [[1]])
             # [[B]] − [[1]] is a local operation (affine subtraction).
             b_minus_one: Shares = shares_sub(b_nm, one_shares, p)
-            u_shares: Shares = protocol_4_secure_mult(
+            u_shares: Shares = secure_mult(
                 b_nm, b_minus_one, n, t, p
             )
 
             # Line 5: u ← Reconstruct([[u]])  — publicly revealed.
-            u_val: int = protocol_2_reconstruct(u_shares[:t], p)
+            u_val: int = reconstruct(u_shares[:t], p)
 
             # Lines 6-8: non-zero u means B ∉ {0, 1} → voter is a cheater.
             if u_val != 0:                                           # Line 6
