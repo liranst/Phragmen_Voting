@@ -79,11 +79,10 @@ def algorithm_18_kth_ranked(
     # ------------------------------------------------------------------
     # Lines 8-10: tie-break adjustment
     # ------------------------------------------------------------------
-    kappa_2 = sum(1 for u in dataset if u <= alpha)         # Line 8
+    kappa_2 = sum(1 for u in dataset if u <= alpha - 1)     # Line 8
     if print_:
         print(f"[Algorithm18] Final α={alpha}, κ_2={kappa_2}")
-    kappa_prev = sum(1 for u in dataset if u <= alpha - 1)  # Line 9
-    if kappa_prev >= k:                                      # Line 9
+    if kappa_2 >= k:                                         # Line 9
         alpha = alpha - 1                                    # Line 10
 
     return alpha                                             # Line 11

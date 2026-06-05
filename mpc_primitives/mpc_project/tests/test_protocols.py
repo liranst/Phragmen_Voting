@@ -393,6 +393,16 @@ class TestKthRanked:
         from mpc_secret_shares import algorithm_18_kth_ranked
         assert algorithm_18_kth_ranked([3, 3, 3], 4, 2, 2) == 3
 
+    def test_even_valued_elements(self):
+        """Regression: even-valued k-th elements — kappa_2 must use alpha-1, not alpha."""
+        from mpc_secret_shares import kth_ranked
+        assert kth_ranked([2],          8,  1)     == 2, "singleton 2"
+        assert kth_ranked([4],          8,  1)     == 4, "singleton 4"
+        assert kth_ranked([6],          8,  1)     == 6, "singleton 6"
+        assert kth_ranked([2, 4, 6, 8], 16, 2)    == 4, "rank 2 of [2,4,6,8]"
+        assert kth_ranked([10,11,4,5,8,9,5,3], 16, 3) == 5, "rank 3, duplicates"
+        assert kth_ranked([10,11,4,5,8,9,5,3], 16, 4) == 5, "rank 4, duplicates"
+
 
 # ==========================================================================
 # Issue regression tests
