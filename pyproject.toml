@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pp-phragmen"
+version = "0.1.0"
+description = "Privacy-Preserving Phragmén Voting via Secure Multi-Party Computation"
+authors = [{name = "Liran Shem-Tov", email = "liranst13@gmail.com"}]
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = ["mpc-secret-shares>=0.2.0"]
+
+[project.urls]
+Homepage = "https://github.com/liranst13/Phragmen_Voting"
+
+[tool.setuptools.packages.find]
+include = ["protocol*"]
