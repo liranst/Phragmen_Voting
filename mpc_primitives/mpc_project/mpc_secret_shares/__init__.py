@@ -15,7 +15,7 @@ Typical MPC parameters (used throughout the API):
     p  — prime field modulus
 """
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 # ── Foundational sharing / reconstruction ──────────────────────────────────
 from .protocol1 import protocol_1_share

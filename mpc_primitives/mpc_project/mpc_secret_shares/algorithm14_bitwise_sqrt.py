@@ -46,8 +46,8 @@ def algorithm_14_bitwise_sqrt(
     # Determine bit-length, padded to even
     if s is None:
         s = math.ceil(math.log2(u + 1)) if u > 0 else 1
-        if s % 2 == 1:
-            s += 1
+    if s % 2 == 1:
+        s += 1
 
     # Build or pad the bit array (index 0 = LSB)
     if u_bits is None:

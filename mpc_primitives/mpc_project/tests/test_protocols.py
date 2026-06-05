@@ -395,6 +395,67 @@ class TestKthRanked:
 
 
 # ==========================================================================
+# Issue regression tests
+# ==========================================================================
+
+class TestIssueRegressions:
+    """Targeted regression tests for the three known issues."""
+
+    def test_issue1_coefficient_indexed_by_j(self):
+        """Issue 1: Protocol 1 polynomial uses a_j (indexed by j), not a_i.
+
+        Uses t=3 so the polynomial has two non-constant random coefficients.
+        Every Z_p element must round-trip correctly; a wrong index would
+        produce a different polynomial and break reconstruction.
+        """
+        random.seed(9001)
+        from mpc_secret_shares import protocol_1_share, protocol_2_reconstruct
+        for secret in range(P):
+            sh = protocol_1_share(secret, n=4, t=3, P=P)
+            recovered = protocol_2_reconstruct(sh[:3], P)
+            assert recovered == secret, (
+                f"Issue 1: coefficient mis-indexed for secret={secret}"
+            )
+
+    def test_issue2_algorithm14_odd_s_padded(self):
+        """Issue 2: Algorithm 14 pads odd s to even so the LSB pair is not skipped."""
+        from mpc_secret_shares import algorithm_14_bitwise_sqrt
+        for u, s_odd in [(0, 2), (1, 2), (2, 4), (3, 4), (8, 4), (9, 4), (15, 4)]:
+            result = algorithm_14_bitwise_sqrt(u, s=s_odd)
+            assert result == math.isqrt(u), (
+                f"Issue 2: Alg14 wrong for u={u}, s={s_odd} (odd-padded)"
+            )
+
+    def test_issue2_protocol15_odd_s_padded(self):
+        """Issue 2: Protocol 15 pads odd s to even before the bit-pair loop."""
+        random.seed(9002)
+        from mpc_secret_shares import protocol_15_secure_sqrt, algorithm_14_bitwise_sqrt
+        s_odd = 3
+        for u in [0, 1, 2, 3, 4]:
+            u_bits = [_share((u >> i) & 1) for i in range(s_odd)]
+            w_sh = protocol_15_secure_sqrt(_share(u), u_bits, N, T, P, s=s_odd)
+            expected = algorithm_14_bitwise_sqrt(u, s=s_odd)
+            assert _reconstruct(w_sh) == expected, (
+                f"Issue 2: SecureSqrt(u={u}, s={s_odd}) wrong"
+            )
+
+    def test_issue3_duplicate_values_adjacent_ranks(self):
+        """Issue 3: duplicate values in dataset — consecutive ranks both return
+        the duplicate correctly.
+
+        dataset = [10, 11, 4, 5, 8, 9, 5, 3]  →  sorted [3,4,5,5,8,9,10,11]
+        k=3 and k=4 must both return 5.
+        """
+        from mpc_secret_shares import algorithm_18_kth_ranked
+        data = [10, 11, 4, 5, 8, 9, 5, 3]
+        M, l = 16, 4
+        assert algorithm_18_kth_ranked(data, M, 3, l) == 5, \
+            "Issue 3: rank 3 of duplicate-containing dataset wrong"
+        assert algorithm_18_kth_ranked(data, M, 4, l) == 5, \
+            "Issue 3: rank 4 of duplicate-containing dataset wrong"
+
+
+# ==========================================================================
 # square_and_multiply
 # ==========================================================================
 
