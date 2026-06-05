@@ -5,18 +5,18 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "mpc-secret-shares"
 version = "0.1.0"
-description = "A Python library for Secure Multiparty Computation over secret shares."
+description = "MPC primitives over Shamir secret shares, implemented from the SoK paper"
 readme = "README.md"
-requires-python = ">=3.8"
-license = { text = "MIT" }
+authors = [{name = "Liran Shem-Tov", email = "liranst13@gmail.com"}]
+requires-python = ">=3.10"
+license = {text = "MIT"}
 classifiers = [
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
-    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Operating System :: OS Independent",
     "Topic :: Security :: Cryptography",
     "Topic :: Scientific/Engineering :: Mathematics",
@@ -26,8 +26,11 @@ classifiers = [
 keywords = ["mpc", "secret-sharing", "shamir", "cryptography", "secure-computation"]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/mpc-secret-shares"
-Issues   = "https://github.com/yourusername/mpc-secret-shares/issues"
+Homepage = "https://github.com/liranst13/mpc-secret-shares"
+Issues   = "https://github.com/liranst13/mpc-secret-shares/issues"
+
+[tool.setuptools]
+license-files = []
 
 [tool.setuptools.packages.find]
 where = ["."]
