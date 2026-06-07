@@ -11,8 +11,8 @@ import random
 import pytest
 
 from mpc_secret_shares import (
-    share,
-    reconstruct,
+    protocol_1_share as share,
+    protocol_2_reconstruct as reconstruct,
 )
 from protocol.algorithm2_validation import algorithm_2_input_validation
 from protocol.types import BallotMatrix, Shares

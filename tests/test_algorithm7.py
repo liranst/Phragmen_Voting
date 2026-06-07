@@ -24,8 +24,8 @@ import random
 import pytest
 
 from mpc_secret_shares import (
-    share,
-    reconstruct,
+    protocol_1_share as share,
+    protocol_2_reconstruct as reconstruct,
 )
 from protocol.algorithm7_wallet_update import algorithm_7_wallet_update
 from protocol.types import BallotMatrix, Shares

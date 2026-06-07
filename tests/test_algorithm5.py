@@ -14,8 +14,8 @@ import random
 import pytest
 
 from mpc_secret_shares import (
-    share,
-    reconstruct,
+    protocol_1_share as share,
+    protocol_2_reconstruct as reconstruct,
 )
 from protocol.algorithm5_find_min import algorithm_5_find_minimum_score
 from protocol.types import ScorePair, Shares

@@ -10,7 +10,7 @@ import random
 
 import pytest
 
-from mpc_secret_shares import share
+from mpc_secret_shares import protocol_1_share as share
 from protocol.algorithm8_reconstruct_winner import algorithm_8_reconstruct_winner
 from protocol.types import Shares
 

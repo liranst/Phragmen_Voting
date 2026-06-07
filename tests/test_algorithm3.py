@@ -8,7 +8,7 @@ Standard test parameters: p=11, n=3 parties, t=2 threshold.
 
 import pytest
 
-from mpc_secret_shares import reconstruct
+from mpc_secret_shares import protocol_2_reconstruct as reconstruct
 from protocol.algorithm3_initialization import algorithm_3_initialization
 
 P, N, T = 11, 3, 2

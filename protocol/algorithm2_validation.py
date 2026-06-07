@@ -14,8 +14,8 @@ fresh matrix B̂ of size N_valid × M.
 from typing import List, Tuple
 
 from mpc_secret_shares import (
-    reconstruct,
-    secure_mult,
+    protocol_2_reconstruct as reconstruct,
+    protocol_4_secure_mult as secure_mult,
     shares_one,
     shares_sub,
 )

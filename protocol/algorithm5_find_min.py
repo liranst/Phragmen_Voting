@@ -18,8 +18,8 @@ bottleneck of the per-period loop (paper Remark 6.1).
 from typing import List, Tuple
 
 from mpc_secret_shares import (
-    secure_mult,
-    secure_lt,
+    protocol_4_secure_mult as secure_mult,
+    protocol_5_secure_compare as secure_lt,
     shares_add,
     shares_sub,
 )

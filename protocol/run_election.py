@@ -9,7 +9,7 @@ and Algorithm 3 (initialization) run once before the first period; Algorithms
 import random
 from typing import List
 
-from mpc_secret_shares import share
+from mpc_secret_shares import protocol_1_share as share
 
 from protocol.algorithm1_permutation import algorithm_1_oblivious_candidate_permutation
 from protocol.algorithm2_validation import algorithm_2_input_validation

@@ -31,8 +31,8 @@ from fractions import Fraction
 from typing import List, Optional, Tuple
 
 from mpc_secret_shares import (
-    share,
-    reconstruct,
+    protocol_1_share as share,
+    protocol_2_reconstruct as reconstruct,
 )
 from protocol.algorithm2_validation import algorithm_2_input_validation
 from protocol.algorithm3_initialization import algorithm_3_initialization

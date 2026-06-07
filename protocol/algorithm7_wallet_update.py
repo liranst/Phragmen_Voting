@@ -33,7 +33,7 @@ Invariant verification:
 from typing import List, Tuple
 
 from mpc_secret_shares import (
-    secure_mult,
+    protocol_4_secure_mult as secure_mult,
     shares_add,
     shares_one,
     shares_sub,

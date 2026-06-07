@@ -14,8 +14,8 @@ import random
 import pytest
 
 from mpc_secret_shares import (
-    share,
-    reconstruct,
+    protocol_1_share as share,
+    protocol_2_reconstruct as reconstruct,
 )
 from protocol.algorithm6_one_hot import algorithm_6_one_hot_winner
 from protocol.types import ScorePair, Shares
