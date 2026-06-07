@@ -25,7 +25,7 @@ making Algorithm 5's comparison meaningless.
 from typing import List, Tuple
 
 from mpc_secret_shares import (
-    protocol_4_secure_mult as secure_mult,
+    secure_mult,
     shares_add,
     shares_sub,
     shares_zero,

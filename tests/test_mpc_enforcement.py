@@ -19,8 +19,8 @@ from unittest.mock import patch
 import pytest
 
 from mpc_secret_shares import (
-    protocol_1_share as share,
-    protocol_2_reconstruct as reconstruct,
+    share,
+    reconstruct,
     shares_one,
     shares_zero,
 )
@@ -194,13 +194,7 @@ class TestAlgorithm5Enforcement:
             )
 
         with patch(
-            "protocol.algorithm5_find_min.secure_lt",
-            wraps=__import__(
-                "mpc_secret_shares",
-                fromlist=["protocol_5_secure_compare"]
-            ).protocol_5_secure_compare,
-        ), patch(
-            "mpc_secret_shares.protocol_2_reconstruct",
+            "mpc_secret_shares.reconstruct",
             side_effect=_reconstruct_forbidden,
         ):
             win_num, win_den = algorithm_5_find_minimum_score(scores, N, T, P)

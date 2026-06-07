@@ -18,7 +18,7 @@ interpolation on already-held shares.
 
 from typing import List
 
-from mpc_secret_shares import protocol_2_reconstruct as reconstruct
+from mpc_secret_shares import reconstruct
 from protocol.types import Shares
 
 

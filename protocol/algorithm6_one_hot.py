@@ -31,8 +31,8 @@ Communication: 2M + (M−1) SecureMult and M SecureIsZero per period.
 from typing import List
 
 from mpc_secret_shares import (
-    protocol_4_secure_mult as secure_mult,
-    protocol_10_is_zero as is_zero,
+    secure_mult,
+    is_zero,
     shares_add,
     shares_one,
     shares_sub,

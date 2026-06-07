@@ -50,8 +50,8 @@ import tempfile
 import pytest
 
 from mpc_secret_shares import (
-    protocol_1_share as share,
-    protocol_2_reconstruct as reconstruct,
+    share,
+    reconstruct,
 )
 from protocol.algorithm1_permutation import algorithm_1_oblivious_candidate_permutation
 from protocol.algorithm2_validation import algorithm_2_input_validation
