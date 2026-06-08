@@ -1,9 +1,9 @@
 """High-level runner for the PP-Phragmén protocol.
 
 Orchestrates Algorithms 1–8 of "Fairness Without Exposure: Privacy-Preserving
-Phragmén Voting" across one or more election periods.  Algorithm 1 (permutation)
-and Algorithm 3 (initialization) run once before the first period; Algorithms
-2 and 4–8 run every period.
+Phragmén Voting" across one or more election periods.  Algorithm 1 runs once
+per period; Algorithm 3 (initialization) runs once before the first period;
+Algorithms 2 and 4–8 run every period.
 """
 
 import random
@@ -68,19 +68,19 @@ def run_election(
 
     n_candidates: int = len(ballot_periods[0][0])
 
-    # Algorithm 1: generate the oblivious candidate permutation once.
-    # Each party contributes one seed; their XOR determines π.
-    seeds: List[bytes] = [random.randbytes(security_bits // 8) for _ in range(n_parties)]
-    pi: List[int] = algorithm_1_oblivious_candidate_permutation(
-        security_bits, n_candidates, n_parties, seeds=seeds
-    )
-
     delta = None
     wallets = None
     n_valid: int = 0
     winners: List[int] = []
 
     for r, ballots in enumerate(ballot_periods):
+
+        # Algorithm 1: fresh permutation every period so π is never reused.
+        # Each party contributes one seed; their XOR determines π.
+        seeds: List[bytes] = [random.randbytes(security_bits // 8) for _ in range(n_parties)]
+        pi: List[int] = algorithm_1_oblivious_candidate_permutation(
+            security_bits, n_candidates, n_parties, seeds=seeds
+        )
 
         # Algorithm 2: validate fresh ballot entries every period.
         B_shares: BallotMatrix = _make_ballot_shares(ballots, n_parties, threshold, p)

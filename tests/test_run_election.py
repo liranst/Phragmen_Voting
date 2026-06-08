@@ -59,9 +59,9 @@ class TestRunElectionCallsAllAlgorithms:
         # Sanity-check the election produced two winners
         assert len(winners) == 2
 
-        # Algorithm 1: permutation generated once at setup
-        assert m1.call_count == 1, (
-            f"Algorithm 1 expected 1 call, got {m1.call_count}"
+        # Algorithm 1: fresh permutation generated once per period
+        assert m1.call_count == 2, (
+            f"Algorithm 1 expected 2 calls, got {m1.call_count}"
         )
         # Algorithm 2: ballot validation runs every period
         assert m2.call_count == 2, (
